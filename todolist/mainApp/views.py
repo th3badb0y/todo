@@ -23,7 +23,7 @@ class TodoViewSet(viewsets.ModelViewSet):
         return Response({'detail': 'Todo deleted successfully'})
 
     @action(detail=True, methods=['put'])
-    def reorder_todo(self, request, pk=None):
+    def reorder(self, request, pk=None):
         todo = self.get_object()
         order = request.data.get('order')
 
@@ -32,3 +32,28 @@ class TodoViewSet(viewsets.ModelViewSet):
             todo.save()
 
         return Response({'detail': 'Todo reordered successfully'})
+
+    @action(detail=True, methods=['put'])
+    def edit(self, request, pk=None):
+        todo = self.get_object()
+        serializer = self.get_serializer(todo, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['put'])
+    def complete(self, request, pk=None):
+        todo = self.get_object()
+        todo.completed = True
+        todo.save()
+
+        return Response({'detail': 'Todo marked as completed'})
+
+    @action(detail=True, methods=['put'])
+    def undo(self, request, pk=None):
+        todo = self.get_object()
+        todo.completed = False
+        todo.save()
+
+        return Response({'detail': 'Undo action performed'})
