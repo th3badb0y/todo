@@ -53,7 +53,7 @@ class TodoAPI(APIView):
         if request.method == 'POST':
         # Process form data and save the Todo
 
-        return render(request, 'createtodo.html')
+            return render(request, 'createtodo.html')
 
     def listtodo_view(request):
     # Fetch all Todos from the database
