@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Todo
 from .serializers import TodoSerializer
+from django.shortcuts import render
 
 class TodoAPI(APIView):
     def post(self, request):
@@ -45,3 +46,17 @@ class TodoAPI(APIView):
             todo.save()
             return Response({'detail': 'Todo reordered successfully'})
         return Response({'detail': 'Order not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    def createtodo_view(request):
+    # Handle POST request to create a new Todo
+        if request.method == 'POST':
+        # Process form data and save the Todo
+
+        return render(request, 'createtodo.html')
+
+    def listtodo_view(request):
+    # Fetch all Todos from the database
+        todos = Todo.objects.all()
+
+        return render(request, 'listtodos.html', {'todos': todos})

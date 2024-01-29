@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Todo</title>
+</head>
+<body>
+    <h2>Create Todo</h2>
+    <form id="createTodoForm">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <button type="submit">Create</button>
+    </form>
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('createTodoForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('title').value;
+
+            try {
+                const response = await fetch('/api/todos/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                    }),
+                });
+
+                const data = await response.json();
+                document.getElementById('responseMessage').innerText = data.detail;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
